@@ -1,0 +1,16 @@
+[
+    {
+        "RUT": "9876543-2",
+        "PROFILE": "PROFILE#9876543-2",
+        "firstName": "Mary",
+        "lastName": "Jane",
+        "dob": "1989/03/25",
+        "address": "Tray Rd. Santa Clarita, CA."
+    },
+    {
+        "RUT": "9876543-2",
+        "PROFILE": "SUBJECT#auto",
+        "subjectName": "Math I",
+        "subjectMark": 4.5
+    }
+]
