@@ -12,8 +12,9 @@ export class SubjectsController {
 
   @Post(':rut')
   @UseGuards(AuthGuard('api-key'))
-  create(@Param('rut') rut: string, @Body() subject: CreateSubjectDto): Promise<Subject> {
-    return this.subjectsService.create(rut, subject);
+  async create(@Param('rut') rut: string, @Body() subject: CreateSubjectDto): Promise<any> {
+    await this.subjectsService.create(rut, subject);    
+    return { msg: "Item created succesfully" };
   }
 
   @Get()
@@ -28,13 +29,15 @@ export class SubjectsController {
 
   @Patch(':rut/:subjectName')
   @UseGuards(AuthGuard('api-key'))
-  update(@Param('rut') rut: string, @Param('subjectName') subjectName: string, @Body() subject: UpdateSubjectDto): Promise<Subject>{
-    return this.subjectsService.update(rut, subject, subjectName);
+  async update(@Param('rut') rut: string, @Param('subjectName') subjectName: string, @Body() subject: UpdateSubjectDto): Promise<any>{
+    await this.subjectsService.update(rut, subject, subjectName);
+    return { msg: "Item updated succesfully" };
   }
 
   @Delete(':rut/:subjectName')
   @UseGuards(AuthGuard('api-key'))
-  remove(@Param('rut') rut: string, @Param('subjectName') subjectName: string): Promise<any> {
-    return this.subjectsService.remove(rut, subjectName);
+  async remove(@Param('rut') rut: string, @Param('subjectName') subjectName: string): Promise<any> {
+    await this.subjectsService.remove(rut, subjectName);
+    return { msg: "Item deleted succesfully" };
   }
 }

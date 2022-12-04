@@ -122,7 +122,7 @@ export class SubjectsService {
         "#subjectNewName": "subjectName",
         "#subjectMark": "subjectMark",
         "#subjectOldName": "subjectName"
-      }
+      },
     }
 
     try {

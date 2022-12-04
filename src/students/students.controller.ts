@@ -12,8 +12,9 @@ export class StudentsController {
 
   @Post()
   @UseGuards(AuthGuard('api-key'))
-  create(@Body() student: CreateStudentDto): Promise<Student> {
-    return this.studentsService.create(student);
+  async create(@Body() student: CreateStudentDto): Promise<any> {
+    await this.studentsService.create(student);
+    return { msg: "Item created succesfully" };
   }
 
   @Get()
@@ -37,13 +38,15 @@ export class StudentsController {
 
   @Patch(':rut')
   @UseGuards(AuthGuard('api-key'))
-  update(@Param('rut') rut: string, @Body() student: UpdateStudentDto): Promise<Student> {
-    return this.studentsService.update(rut, student);
+  async update(@Param('rut') rut: string, @Body() student: UpdateStudentDto): Promise<any> {
+    await this.studentsService.update(rut, student);
+    return { msg: "Item updated succesfully" };
   }
 
   @Delete(':rut')
   @UseGuards(AuthGuard('api-key'))
   async remove(@Param('rut') rut: string): Promise<any> {
-    return await this.studentsService.remove(rut);
+    await this.studentsService.remove(rut);
+    return { msg: "Item deleted succesfully" };
   }
 }
