@@ -174,17 +174,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/afex-backend-test/dev/1669520645727-2022-11-27T03:44:05.727Z/afex-backend-test.zip"
+          "S3Key": "serverless/afex-backend-test/dev/1669625408580-2022-11-28T08:50:08.580Z/afex-backend-test.zip"
         },
         "Handler": "_optimize/afex-backend-test-dev-app/dist/main.handler",
         "Runtime": "nodejs14.x",
         "FunctionName": "afex-backend-test-dev-app",
         "MemorySize": 1024,
-        "Timeout": 6,
+        "Timeout": 30,
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-            "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000"
+            "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
+            "DYNAMODB_ENDPOINT": "http://localhost:8000"
           }
         },
         "Role": {
@@ -198,14 +199,14 @@
         "AppLogGroup"
       ]
     },
-    "AppLambdaVersion5BStFmEg5e2pvfqIv28A3ORMb3eUWXoxkWLfPSsEQjA": {
+    "AppLambdaVersionFnP1sMEkjNzKExJ2cUXZkNRNp9i5wtFUQ3f7WvgsKQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AppLambdaFunction"
         },
-        "CodeSha256": "xc42BzWspRkmsbZraVaFc2UE+WHweyPjvRdoeM7+e1s="
+        "CodeSha256": "ESlvFHguU2MUED1oK+8F/t+EiD+TtS91/T9dwuzMfcA="
       }
     },
     "ApiGatewayRestApi": {
@@ -281,7 +282,7 @@
         "AppLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1669520626548": {
+    "ApiGatewayDeployment1669625392233": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -373,7 +374,7 @@
     "AppLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AppLambdaVersion5BStFmEg5e2pvfqIv28A3ORMb3eUWXoxkWLfPSsEQjA"
+        "Ref": "AppLambdaVersionFnP1sMEkjNzKExJ2cUXZkNRNp9i5wtFUQ3f7WvgsKQ"
       },
       "Export": {
         "Name": "sls-afex-backend-test-dev-AppLambdaFunctionQualifiedArn"

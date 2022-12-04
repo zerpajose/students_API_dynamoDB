@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiQuery, ApiParam } from '@nestjs/swagger';
+import { Controller, Get, Post, Delete, Body, Param, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Student, Subject } from './interface';
 
-@Controller('students')
+@Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -18,15 +17,6 @@ export class AppController {
   }
 
   @Get(':rut')
-  @ApiParam({
-    name: 'RUT',
-    required: true,
-    description: 'Get a Student by RUT',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Returns a Student based on a specific RUT',
-  })
   async getStudentByRut(@Param('rut') rut: string): Promise<Student[]> {
     return await this.appService.getStudentByRut(rut);
   }
@@ -36,9 +26,9 @@ export class AppController {
     return await this.appService.deleteStudent(id);
   }
 
-  @Get('subjects')
-  async getAllStudentsSubjects(): Promise<Subject[]> {
-    return await this.appService.getAllStudentsSubjects();
+  @Get('subject')
+  async getStudentsSubjects(@Query('subjects') query: string): Promise<Subject[]> {
+    return await this.appService.getAllStudentsSubjects(query);
   }
 
   @Get('subjects/:rut')

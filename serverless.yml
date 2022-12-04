@@ -6,24 +6,26 @@ plugins:
   - serverless-dynamodb-local
 
 functions:
- app: 
-   handler: dist/main.handler
-   events:
-     - http:
-         method: any
-         path: /{any+}
+  app: 
+    handler: dist/main.handler
+    events:
+      - http:
+          method: any
+          path: /{any+}
 
 provider: 
     name: aws
     runtime: nodejs14.x
     stage: ${opt:stage, 'dev'}
     region: 'us-east-1'
+    timeout: 30
     apiGateway:
       shouldStartNameWithService: true
 
     environment: 
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
       NODE_OPTIONS: --enable-source-maps --stack-trace-limit=1000
+      DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodbURL}
     iam: 
       role: 
         statements: 
@@ -56,10 +58,14 @@ custom:
   dynamodb: 
     start: 
       port: 8000
-      inMemory: true
-      migrate: true
+      inMemory: false
+      noStart: true
+      dbPath: '$HOME/Descargas/dynamodb_local_latest/DynamoDBLocal.jar'
+      sharedDb: true
 
     stages: dev
+  endpoints:
+    dynamodbURL: 'http://localhost:8000'
 
 resources: 
     Resources: 

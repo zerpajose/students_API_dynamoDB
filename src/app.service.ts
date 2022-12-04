@@ -5,9 +5,9 @@ import { Student, Subject } from './interface';
 
 const dynamoDB = process.env.IS_OFFLINE
   ? new AWS.DynamoDB.DocumentClient({
-      region: "localhost",
-      endpoint: process.env.DYNAMODB_ENDPOINT,
-    })
+    region: "localhost",
+    endpoint: process.env.DYNAMODB_ENDPOINT,
+  })
   : new AWS.DynamoDB.DocumentClient();
 
 @Injectable()
@@ -42,30 +42,30 @@ export class AppService {
   }
 
   async getStudentByRut(rut: string): Promise<any> {
-    var params = {
+    const params = {
       ExpressionAttributeValues: {
         ':s': rut,
         ':e': `PROFILE#${rut}`,
-       },
-     KeyConditionExpression: 'RUT = :s and PROFILE = :e',
-     TableName: 'alumnos'
+      },
+      KeyConditionExpression: 'RUT = :s and PROFILE = :e',
+      TableName: 'alumnos'
     };
 
     try {
       return await dynamoDB.query(params).promise();
-    }catch (e) {
+    } catch (e) {
       console.log(e);
       throw new InternalServerErrorException(e);
     }
   }
 
-  async deleteStudent(id: string): Promise<any> {
+  async deleteStudent(rut: string): Promise<any> {
     try {
       return await dynamoDB
         .delete({
           TableName: "alumnos",
           Key: {
-            id: id,
+            RUT: rut,
           },
         })
         .promise();
@@ -77,7 +77,7 @@ export class AppService {
   async getSubjectsByStudentRut(rut: string): Promise<any> {
     const params = {
       KeyConditionExpression: '#rut = :rut and begins_with(#subject, :subject)',
-      ExpressionAttributeNames:{
+      ExpressionAttributeNames: {
         "#rut": "RUT",
         "#subject": 'PROFILE'
       },
@@ -90,29 +90,29 @@ export class AppService {
 
     try {
       return await dynamoDB.query(params).promise();
-    }catch (e) {
+    } catch (e) {
       console.log(e);
       throw new InternalServerErrorException(e);
     }
   }
 
-  async getAllStudentsSubjects(): Promise<any> {
+  async getAllStudentsSubjects(query: string): Promise<any> {
     const params = {
-      TableName: 'alumnos',
-      FilterExpression: "begins_with(#subject, :subject)",
-      ExpressionAttributeNames:{
-        "#subject": 'PROFILE',
+      TableName: "alumnos",
+      FilterExpression: "begins_with(#profile, :subject)",
+      ExpressionAttributeNames: {
+        "#profile": "PROFILE",
       },
       ExpressionAttributeValues: {
-        ":subject": {
-          "S": "SUBJECT#",
-        }
-      },
-    };
+        ":subject": "SUBJECT#",
+      }
+    }
 
     try {
-      return await dynamoDB.scan(params).promise();
-    }catch (e) {
+      if (Object.keys(query)[0] === 'subjects') {
+        return await dynamoDB.scan(params).promise();
+      }
+    } catch (e) {
       console.log(e);
       throw new InternalServerErrorException(e);
     }

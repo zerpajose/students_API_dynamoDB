@@ -8,9 +8,64 @@
         "address": "Tray Rd. Santa Clarita, CA."
     },
     {
+        "RUT": "18963548-9",
+        "PROFILE": "PROFILE#18963548-9",
+        "firstName": "John",
+        "lastName": "Doe",
+        "dob": "1991/06/05",
+        "address": "Clay St. Santa Monica, CA."
+    },
+    {
+        "RUT": "12345678-9",
+        "PROFILE": "PROFILE#12345678-9",
+        "firstName": "Juan",
+        "lastName": "Perez",
+        "dob": "1988/03/16",
+        "address": "Liberty Blvd. Pasadena, CA."
+    },
+    {
         "RUT": "9876543-2",
-        "PROFILE": "SUBJECT#auto",
-        "subjectName": "Math I",
+        "subjectName": "Math",
         "subjectMark": 4.5
+    },
+    {
+        "RUT": "9876543-2",
+        "subjectName": "Chemistry",
+        "subjectMark": 7
+    },
+    {
+        "RUT": "9876543-2",
+        "subjectName": "Geography",
+        "subjectMark": 3.3
+    },
+    {
+        "RUT": "18963548-9",
+        "subjectName": "Math",
+        "subjectMark": 4.1
+    },
+    {
+        "RUT": "18963548-9",
+        "subjectName": "Chemistry",
+        "subjectMark": 3.9
+    },
+    {
+        "RUT": "18963548-9",
+        "subjectName": "Geography",
+        "subjectMark": 6.3
+    },
+    {
+        "RUT": "12345678-9",
+        "subjectName": "Math",
+        "subjectMark": 4.9
+    },
+    {
+        "RUT": "12345678-9",
+        "subjectName": "Chemistry",
+        "subjectMark": 3.9
+    },
+    {
+        "RUT": "12345678-9",
+        "subjectName": "Geography",
+        "subjectMark": 6.5
     }
 ]

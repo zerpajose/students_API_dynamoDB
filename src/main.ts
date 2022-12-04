@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ExpressAdapter } from '@nestjs/platform-express';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { Express } from 'express';
 import { Server } from 'http';
@@ -33,6 +33,8 @@ function setupSwagger(app: INestApplication){
 
 async function createExpressApp(expressApp: Express,): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp),);
+  app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
   return app;
 }
 
