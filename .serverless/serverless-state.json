@@ -175,6 +175,18 @@
                         ]
                       },
                       {
+                        "Effect": "Deny",
+                        "Action": "logs:PutLogEvents",
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/afex-backend-test-dev-swagger-ui:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/afex-backend-test-dev-swagger-json:*"
+                          }
+                        ]
+                      },
+                      {
                         "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][0]"
                       }
                     ]
@@ -204,7 +216,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/afex-backend-test/dev/1669625408580-2022-11-28T08:50:08.580Z/afex-backend-test.zip"
+                "S3Key": "serverless/afex-backend-test/dev/1670451475049-2022-12-07T22:17:55.049Z/afex-backend-test.zip"
               },
               "Handler": "_optimize/afex-backend-test-dev-app/dist/main.handler",
               "Runtime": "nodejs14.x",
@@ -229,14 +241,92 @@
               "AppLogGroup"
             ]
           },
-          "AppLambdaVersionFnP1sMEkjNzKExJ2cUXZkNRNp9i5wtFUQ3f7WvgsKQ": {
+          "SwaggerUILambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/afex-backend-test/dev/1670451475049-2022-12-07T22:17:55.049Z/afex-backend-test.zip"
+              },
+              "Handler": "_optimize/afex-backend-test-dev-swagger-ui/swagger/swagger-html.handler",
+              "Runtime": "nodejs14.x",
+              "FunctionName": "afex-backend-test-dev-swagger-ui",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
+                  "DYNAMODB_ENDPOINT": "http://localhost:8000"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            }
+          },
+          "SwaggerJSONLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/afex-backend-test/dev/1670451475049-2022-12-07T22:17:55.049Z/afex-backend-test.zip"
+              },
+              "Handler": "_optimize/afex-backend-test-dev-swagger-json/swagger/swagger-json.handler",
+              "Runtime": "nodejs14.x",
+              "FunctionName": "afex-backend-test-dev-swagger-json",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
+                  "DYNAMODB_ENDPOINT": "http://localhost:8000"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            }
+          },
+          "AppLambdaVersionKAkgtuLLEWlzHrqCZYV4PfZMPD5EzNfiGSdDzCXuYg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "ESlvFHguU2MUED1oK+8F/t+EiD+TtS91/T9dwuzMfcA="
+              "CodeSha256": "PqQ8sWY+aukMacIj/6eAVMHu/1hZUrituwUT/R1t4KA="
+            }
+          },
+          "SwaggerUILambdaVersionV9pcqh0QrpsSL9MIGwSoRJI4Zxk93c71OyI9func": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "SwaggerUILambdaFunction"
+              },
+              "CodeSha256": "PqQ8sWY+aukMacIj/6eAVMHu/1hZUrituwUT/R1t4KA="
+            }
+          },
+          "SwaggerJSONLambdaVersionlG4m93TYPunKYN6RfKzqhMpemWBJHvSgyIMBdvhyvM": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "SwaggerJSONLambdaFunction"
+              },
+              "CodeSha256": "PqQ8sWY+aukMacIj/6eAVMHu/1hZUrituwUT/R1t4KA="
             }
           },
           "ApiGatewayRestApi": {
@@ -312,7 +402,7 @@
               "AppLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1669625392233": {
+          "ApiGatewayDeployment1670451456098": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -361,6 +451,170 @@
               }
             }
           },
+          "HttpApi": {
+            "Type": "AWS::ApiGatewayV2::Api",
+            "Properties": {
+              "Name": "dev-afex-backend-test",
+              "ProtocolType": "HTTP"
+            }
+          },
+          "HttpApiStage": {
+            "Type": "AWS::ApiGatewayV2::Stage",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "StageName": "$default",
+              "AutoDeploy": true,
+              "DefaultRouteSettings": {
+                "DetailedMetricsEnabled": false
+              }
+            }
+          },
+          "SwaggerUILambdaPermissionHttpApi": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "SwaggerUILambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "HttpApiIntegrationSwaggerUI": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "IntegrationType": "AWS_PROXY",
+              "IntegrationUri": {
+                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"SwaggerUILambdaPermissionHttpApi\"][\"Properties\"][\"FunctionName\"]"
+              },
+              "PayloadFormatVersion": "2.0",
+              "TimeoutInMillis": 30000
+            }
+          },
+          "HttpApiRouteGetSwagger": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "RouteKey": "GET /swagger",
+              "Target": {
+                "Fn::Join": [
+                  "/",
+                  [
+                    "integrations",
+                    {
+                      "Ref": "HttpApiIntegrationSwaggerUI"
+                    }
+                  ]
+                ]
+              }
+            },
+            "DependsOn": "HttpApiIntegrationSwaggerUI"
+          },
+          "SwaggerJSONLambdaPermissionHttpApi": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "SwaggerJSONLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "HttpApiIntegrationSwaggerJSON": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "IntegrationType": "AWS_PROXY",
+              "IntegrationUri": {
+                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"SwaggerJSONLambdaPermissionHttpApi\"][\"Properties\"][\"FunctionName\"]"
+              },
+              "PayloadFormatVersion": "2.0",
+              "TimeoutInMillis": 30000
+            }
+          },
+          "HttpApiRouteGetSwaggerjson": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "RouteKey": "GET /swagger.json",
+              "Target": {
+                "Fn::Join": [
+                  "/",
+                  [
+                    "integrations",
+                    {
+                      "Ref": "HttpApiIntegrationSwaggerJSON"
+                    }
+                  ]
+                ]
+              }
+            },
+            "DependsOn": "HttpApiIntegrationSwaggerJSON"
+          },
           "alumnos": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
@@ -404,10 +658,28 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersionFnP1sMEkjNzKExJ2cUXZkNRNp9i5wtFUQ3f7WvgsKQ"
+              "Ref": "AppLambdaVersionKAkgtuLLEWlzHrqCZYV4PfZMPD5EzNfiGSdDzCXuYg"
             },
             "Export": {
               "Name": "sls-afex-backend-test-dev-AppLambdaFunctionQualifiedArn"
+            }
+          },
+          "SwaggerUILambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "SwaggerUILambdaVersionV9pcqh0QrpsSL9MIGwSoRJI4Zxk93c71OyI9func"
+            },
+            "Export": {
+              "Name": "sls-afex-backend-test-dev-SwaggerUILambdaFunctionQualifiedArn"
+            }
+          },
+          "SwaggerJSONLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "SwaggerJSONLambdaVersionlG4m93TYPunKYN6RfKzqhMpemWBJHvSgyIMBdvhyvM"
+            },
+            "Export": {
+              "Name": "sls-afex-backend-test-dev-SwaggerJSONLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -434,6 +706,40 @@
             },
             "Export": {
               "Name": "sls-afex-backend-test-dev-ServiceEndpoint"
+            }
+          },
+          "HttpApiId": {
+            "Description": "Id of the HTTP API",
+            "Value": {
+              "Ref": "HttpApi"
+            },
+            "Export": {
+              "Name": "sls-afex-backend-test-dev-HttpApiId"
+            }
+          },
+          "HttpApiUrl": {
+            "Description": "URL of the HTTP API",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "HttpApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  }
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-afex-backend-test-dev-HttpApiUrl"
             }
           }
         }
@@ -553,6 +859,7 @@
       }
     },
     "plugins": [
+      "serverless-auto-swagger",
       "serverless-plugin-optimize",
       "serverless-offline",
       "serverless-dynamodb-local"
@@ -583,7 +890,63 @@
         "timeout": 30,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersionFnP1sMEkjNzKExJ2cUXZkNRNp9i5wtFUQ3f7WvgsKQ"
+        "versionLogicalId": "AppLambdaVersionKAkgtuLLEWlzHrqCZYV4PfZMPD5EzNfiGSdDzCXuYg"
+      },
+      "swaggerUI": {
+        "name": "afex-backend-test-dev-swagger-ui",
+        "handler": "_optimize/afex-backend-test-dev-swagger-ui/swagger/swagger-html.handler",
+        "disableLogs": true,
+        "events": [
+          {
+            "httpApi": {
+              "method": "get",
+              "path": "/swagger"
+            },
+            "resolvedMethod": "GET",
+            "resolvedPath": "/swagger"
+          }
+        ],
+        "package": {
+          "exclude": [
+            "**"
+          ],
+          "include": [
+            "_optimize/afex-backend-test-dev-swagger-ui/**"
+          ]
+        },
+        "memory": 1024,
+        "timeout": 30,
+        "runtime": "nodejs14.x",
+        "vpc": {},
+        "versionLogicalId": "SwaggerUILambdaVersionV9pcqh0QrpsSL9MIGwSoRJI4Zxk93c71OyI9func"
+      },
+      "swaggerJSON": {
+        "name": "afex-backend-test-dev-swagger-json",
+        "handler": "_optimize/afex-backend-test-dev-swagger-json/swagger/swagger-json.handler",
+        "disableLogs": true,
+        "events": [
+          {
+            "httpApi": {
+              "method": "get",
+              "path": "/swagger.json"
+            },
+            "resolvedMethod": "GET",
+            "resolvedPath": "/swagger.json"
+          }
+        ],
+        "package": {
+          "exclude": [
+            "**"
+          ],
+          "include": [
+            "_optimize/afex-backend-test-dev-swagger-json/**"
+          ]
+        },
+        "memory": 1024,
+        "timeout": 30,
+        "runtime": "nodejs14.x",
+        "vpc": {},
+        "versionLogicalId": "SwaggerJSONLambdaVersionlG4m93TYPunKYN6RfKzqhMpemWBJHvSgyIMBdvhyvM"
       }
     },
     "resources": {
@@ -630,7 +993,9 @@
         "$ref": "$[\"service\"][\"plugins\"]"
       },
       "functions": {
-        "$ref": "$[\"service\"][\"functions\"]"
+        "app": {
+          "$ref": "$[\"service\"][\"functions\"][\"app\"]"
+        }
       },
       "provider": {
         "$ref": "$[\"service\"][\"provider\"]"
@@ -647,7 +1012,7 @@
     "artifact": "/home/cryptovincent/Projects/afex-backend-test/.serverless/afex-backend-test.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/afex-backend-test/dev/1669625408580-2022-11-28T08:50:08.580Z",
+    "artifactDirectoryName": "serverless/afex-backend-test/dev/1670451475049-2022-12-07T22:17:55.049Z",
     "artifact": "afex-backend-test.zip"
   }
 }
