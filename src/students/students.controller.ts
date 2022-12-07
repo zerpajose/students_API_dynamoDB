@@ -1,17 +1,20 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiQuery, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiQuery, ApiParam, ApiBody, ApiSecurity, ApiHeader } from '@nestjs/swagger';
 import { StudentsService } from './students.service';
 import { Student } from './entities/student.interface';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('students')
 @Controller('students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Post()
   @UseGuards(AuthGuard('api-key'))
+  @ApiSecurity('X-API-KEY')
+  @ApiHeader({name: 'X-API-KEY', required: true})
   async create(@Body() student: CreateStudentDto): Promise<any> {
     await this.studentsService.create(student);
     return { msg: "Item created succesfully" };
@@ -24,7 +27,7 @@ export class StudentsController {
 
   @Get(':rut')
   @ApiParam({
-    name: 'RUT',
+    name: 'rut',
     required: true,
     description: 'Get a Student by RUT',
   })
@@ -37,7 +40,12 @@ export class StudentsController {
   }
 
   @Patch(':rut')
+  @ApiBody({
+    type: UpdateStudentDto
+  })
   @UseGuards(AuthGuard('api-key'))
+  @ApiSecurity('X-API-KEY')
+  @ApiHeader({name: 'X-API-KEY', required: true})
   async update(@Param('rut') rut: string, @Body() student: UpdateStudentDto): Promise<any> {
     await this.studentsService.update(rut, student);
     return { msg: "Item updated succesfully" };
@@ -45,6 +53,8 @@ export class StudentsController {
 
   @Delete(':rut')
   @UseGuards(AuthGuard('api-key'))
+  @ApiSecurity('X-API-KEY')
+  @ApiHeader({name: 'X-API-KEY', required: true})
   async remove(@Param('rut') rut: string): Promise<any> {
     await this.studentsService.remove(rut);
     return { msg: "Item deleted succesfully" };

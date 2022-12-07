@@ -34,7 +34,10 @@ function setupSwagger(app: INestApplication){
 async function createExpressApp(expressApp: Express,): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp),);
 
-  const config = new DocumentBuilder().setTitle('Students API').addServer("/dev")
+  const config = new DocumentBuilder()
+                      .addApiKey({ type: 'apiKey', name: 'X-API-KEY', in: 'header' }, 'X-API-KEY')
+                      .setTitle('Students API')
+                      .addServer("/dev")
                       .setDescription("Students Test API")
                       .setVersion('v1')
                       .addTag('students')

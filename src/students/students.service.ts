@@ -17,6 +17,7 @@ export class StudentsService {
   async create(student: CreateStudentDto): Promise<any> {
     const studentObj = {
       id: uuid(),
+      PROFILE: `PROFILE#${student.RUT}`,
       ...student,
     };
     try {
