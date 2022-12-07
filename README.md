@@ -47,8 +47,8 @@ npm run build && sls offline start
 ### AWS Lambda
 [https://mqckmegh7b.execute-api.us-east-1.amazonaws.com/dev/docs](https://mqckmegh7b.execute-api.us-east-1.amazonaws.com/dev/docs)
 
-## Demo (AWS)
-[https://mqckmegh7b.execute-api.us-east-1.amazonaws.com/dev/](https://mqckmegh7b.execute-api.us-east-1.amazonaws.com/dev/)
+## API Demo (AWS)
+[https://mqckmegh7b.execute-api.us-east-1.amazonaws.com/dev/docs](https://mqckmegh7b.execute-api.us-east-1.amazonaws.com/dev/docs)
 
 ## Stay in touch
 
