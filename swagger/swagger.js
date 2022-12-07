@@ -5,7 +5,34 @@
     "title": "afex-backend-test",
     "version": "1"
   },
-  "paths": {},
+  "paths": {
+    "/{any+}": {
+      "any": {
+        "summary": "app",
+        "description": "",
+        "operationId": "app.any./{any+}",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "any+",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      }
+    }
+  },
   "definitions": {},
   "securityDefinitions": {}
 };

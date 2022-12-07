@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
@@ -33,6 +33,23 @@ function setupSwagger(app: INestApplication){
 
 async function createExpressApp(expressApp: Express,): Promise<INestApplication> {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp),);
+
+  const config = new DocumentBuilder().setTitle('Students API').addServer("/dev")
+                      .setDescription("Students Test API")
+                      .setVersion('v1')
+                      .addTag('students')
+                      .addTag('subjects')
+                      .build();
+
+  const options: SwaggerDocumentOptions =  {
+    ignoreGlobalPrefix: true,
+  };
+
+  const document = SwaggerModule.createDocument(app, config, options);
+  SwaggerModule.setup('docs', app, document);
+
+  app.setGlobalPrefix('');
+
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
   return app;

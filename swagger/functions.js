@@ -1,7 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (serverless) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     const handlerPath = 'swagger/';
     const configInput = (serverless === null || serverless === void 0 ? void 0 : serverless.configurationInput) || serverless.service;
     const path = (_c = (_b = (_a = serverless.service.custom) === null || _a === void 0 ? void 0 : _a.autoswagger) === null || _b === void 0 ? void 0 : _b.swaggerPath) !== null && _c !== void 0 ? _c : 'swagger';
@@ -33,5 +33,20 @@ exports.default = (serverless) => {
             },
         ],
     };
-    return { swaggerUI, swaggerJSON };
+    const swaggerRedirectURI = ((_o = (_m = serverless.service.custom) === null || _m === void 0 ? void 0 : _m.autoswagger) === null || _o === void 0 ? void 0 : _o.useRedirectUI)
+        ? {
+            name: name && stage ? `${name}-${stage}-swagger-redirect-uri` : undefined,
+            handler: handlerPath + 'oauth2-redirect-html.handler',
+            events: [
+                {
+                    [apiType]: {
+                        method: 'get',
+                        path: useStage ? `/${stage}/oauth2-redirect.html` : `/oauth2-redirect.html`,
+                    },
+                },
+            ],
+        }
+        : undefined;
+    return Object.assign({ swaggerUI,
+        swaggerJSON }, (swaggerRedirectURI && { swaggerRedirectURI }));
 };

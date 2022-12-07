@@ -1,9 +1,11 @@
 service: afex-backend-test
 useDotenv: true
 plugins:
+  - serverless-auto-swagger
   - serverless-plugin-optimize
   - serverless-offline
   - serverless-dynamodb-local
+  
 
 functions:
   app: 
@@ -42,7 +44,7 @@ provider:
               Resource:
                 - arn:aws:dynamodb:us-east-1:159972493637:table/alumnos
 
-custom: 
+custom:
   optimize:
     external: ['swagger-ui-dist']
   esbuild: 
