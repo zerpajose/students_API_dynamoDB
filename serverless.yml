@@ -13,6 +13,9 @@ functions:
     events:
       - http:
           method: any
+          path: /
+      - http:
+          method: any
           path: /{any+}
 
 provider: 

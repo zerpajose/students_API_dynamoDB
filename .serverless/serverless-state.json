@@ -216,7 +216,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/afex-backend-test/dev/1670451475049-2022-12-07T22:17:55.049Z/afex-backend-test.zip"
+                "S3Key": "serverless/afex-backend-test/dev/1670884335038-2022-12-12T22:32:15.038Z/afex-backend-test.zip"
               },
               "Handler": "_optimize/afex-backend-test-dev-app/dist/main.handler",
               "Runtime": "nodejs14.x",
@@ -248,7 +248,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/afex-backend-test/dev/1670451475049-2022-12-07T22:17:55.049Z/afex-backend-test.zip"
+                "S3Key": "serverless/afex-backend-test/dev/1670884335038-2022-12-12T22:32:15.038Z/afex-backend-test.zip"
               },
               "Handler": "_optimize/afex-backend-test-dev-swagger-ui/swagger/swagger-html.handler",
               "Runtime": "nodejs14.x",
@@ -277,7 +277,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/afex-backend-test/dev/1670451475049-2022-12-07T22:17:55.049Z/afex-backend-test.zip"
+                "S3Key": "serverless/afex-backend-test/dev/1670884335038-2022-12-12T22:32:15.038Z/afex-backend-test.zip"
               },
               "Handler": "_optimize/afex-backend-test-dev-swagger-json/swagger/swagger-json.handler",
               "Runtime": "nodejs14.x",
@@ -299,34 +299,34 @@
               }
             }
           },
-          "AppLambdaVersionKAkgtuLLEWlzHrqCZYV4PfZMPD5EzNfiGSdDzCXuYg": {
+          "AppLambdaVersionIKs6glAd5PWnC53TR6Ka6jaYMRqVUejVE7ISS2OFxQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "PqQ8sWY+aukMacIj/6eAVMHu/1hZUrituwUT/R1t4KA="
+              "CodeSha256": "qbYQqEcswDhCxvJudoyNZvLEJOVYdt/7O/7ail/15CA="
             }
           },
-          "SwaggerUILambdaVersionV9pcqh0QrpsSL9MIGwSoRJI4Zxk93c71OyI9func": {
+          "SwaggerUILambdaVersioniPD2TM9SqUHuE5WnxAKyB0jLyXso1HIBAKZUpPA9u4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SwaggerUILambdaFunction"
               },
-              "CodeSha256": "PqQ8sWY+aukMacIj/6eAVMHu/1hZUrituwUT/R1t4KA="
+              "CodeSha256": "qbYQqEcswDhCxvJudoyNZvLEJOVYdt/7O/7ail/15CA="
             }
           },
-          "SwaggerJSONLambdaVersionlG4m93TYPunKYN6RfKzqhMpemWBJHvSgyIMBdvhyvM": {
+          "SwaggerJSONLambdaVersionNF8XJbQDWUBM6uVRRF3MKs3ccyIQcP0ecdCJ8wLyUA8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SwaggerJSONLambdaFunction"
               },
-              "CodeSha256": "PqQ8sWY+aukMacIj/6eAVMHu/1hZUrituwUT/R1t4KA="
+              "CodeSha256": "qbYQqEcswDhCxvJudoyNZvLEJOVYdt/7O/7ail/15CA="
             }
           },
           "ApiGatewayRestApi": {
@@ -355,6 +355,55 @@
                 "Ref": "ApiGatewayRestApi"
               }
             }
+          },
+          "ApiGatewayMethodAny": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "ANY",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "AppLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "AppLambdaPermissionApiGateway"
+            ]
           },
           "ApiGatewayMethodAnyVarAny": {
             "Type": "AWS::ApiGateway::Method",
@@ -402,7 +451,7 @@
               "AppLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1670451456098": {
+          "ApiGatewayDeployment1670884315101": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -411,6 +460,7 @@
               "StageName": "dev"
             },
             "DependsOn": [
+              "ApiGatewayMethodAny",
               "ApiGatewayMethodAnyVarAny"
             ]
           },
@@ -658,7 +708,7 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersionKAkgtuLLEWlzHrqCZYV4PfZMPD5EzNfiGSdDzCXuYg"
+              "Ref": "AppLambdaVersionIKs6glAd5PWnC53TR6Ka6jaYMRqVUejVE7ISS2OFxQ"
             },
             "Export": {
               "Name": "sls-afex-backend-test-dev-AppLambdaFunctionQualifiedArn"
@@ -667,7 +717,7 @@
           "SwaggerUILambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SwaggerUILambdaVersionV9pcqh0QrpsSL9MIGwSoRJI4Zxk93c71OyI9func"
+              "Ref": "SwaggerUILambdaVersioniPD2TM9SqUHuE5WnxAKyB0jLyXso1HIBAKZUpPA9u4"
             },
             "Export": {
               "Name": "sls-afex-backend-test-dev-SwaggerUILambdaFunctionQualifiedArn"
@@ -676,7 +726,7 @@
           "SwaggerJSONLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SwaggerJSONLambdaVersionlG4m93TYPunKYN6RfKzqhMpemWBJHvSgyIMBdvhyvM"
+              "Ref": "SwaggerJSONLambdaVersionNF8XJbQDWUBM6uVRRF3MKs3ccyIQcP0ecdCJ8wLyUA8"
             },
             "Export": {
               "Name": "sls-afex-backend-test-dev-SwaggerJSONLambdaFunctionQualifiedArn"
@@ -872,6 +922,13 @@
           {
             "http": {
               "method": "any",
+              "path": "",
+              "integration": "AWS_PROXY"
+            }
+          },
+          {
+            "http": {
+              "method": "any",
               "path": "{any+}",
               "integration": "AWS_PROXY"
             }
@@ -890,7 +947,7 @@
         "timeout": 30,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersionKAkgtuLLEWlzHrqCZYV4PfZMPD5EzNfiGSdDzCXuYg"
+        "versionLogicalId": "AppLambdaVersionIKs6glAd5PWnC53TR6Ka6jaYMRqVUejVE7ISS2OFxQ"
       },
       "swaggerUI": {
         "name": "afex-backend-test-dev-swagger-ui",
@@ -918,7 +975,7 @@
         "timeout": 30,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "SwaggerUILambdaVersionV9pcqh0QrpsSL9MIGwSoRJI4Zxk93c71OyI9func"
+        "versionLogicalId": "SwaggerUILambdaVersioniPD2TM9SqUHuE5WnxAKyB0jLyXso1HIBAKZUpPA9u4"
       },
       "swaggerJSON": {
         "name": "afex-backend-test-dev-swagger-json",
@@ -946,7 +1003,7 @@
         "timeout": 30,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "SwaggerJSONLambdaVersionlG4m93TYPunKYN6RfKzqhMpemWBJHvSgyIMBdvhyvM"
+        "versionLogicalId": "SwaggerJSONLambdaVersionNF8XJbQDWUBM6uVRRF3MKs3ccyIQcP0ecdCJ8wLyUA8"
       }
     },
     "resources": {
@@ -1012,7 +1069,7 @@
     "artifact": "/home/cryptovincent/Projects/afex-backend-test/.serverless/afex-backend-test.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/afex-backend-test/dev/1670451475049-2022-12-07T22:17:55.049Z",
+    "artifactDirectoryName": "serverless/afex-backend-test/dev/1670884335038-2022-12-12T22:32:15.038Z",
     "artifact": "afex-backend-test.zip"
   }
 }

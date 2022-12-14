@@ -6,6 +6,25 @@
     "version": "1"
   },
   "paths": {
+    "/": {
+      "any": {
+        "summary": "app",
+        "description": "",
+        "operationId": "app.any./",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
+      }
+    },
     "/{any+}": {
       "any": {
         "summary": "app",
